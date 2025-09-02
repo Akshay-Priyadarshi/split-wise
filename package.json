@@ -1,0 +1,34 @@
+{
+	"name": "split-wise",
+	"description": "",
+	"scripts": {
+		"postinstall": "motia install",
+		"dev": "motia dev",
+		"dev:debug": "motia dev --verbose",
+		"generate-types": "motia generate-types",
+		"build": "motia build",
+		"clean": "rm -rf dist node_modules python_modules .motia .mermaid",
+		"migrations:generate": "npx drizzle-kit generate",
+		"migrations:apply": "npx drizzle-kit migrate --config ./drizzle.config.ts",
+		"prepare": "npx @biomejs/biome check --write"
+	},
+	"keywords": [
+		"motia"
+	],
+	"dependencies": {
+		"dotenv": "^17.2.1",
+		"drizzle-orm": "^0.44.5",
+		"motia": "^0.6.1-beta.124",
+		"pg": "^8.16.3",
+		"zod": "^3.25.76"
+	},
+	"devDependencies": {
+		"@biomejs/biome": "2.2.2",
+		"@types/pg": "^8.15.5",
+		"@types/react": "^18.3.18",
+		"drizzle-kit": "^0.31.4",
+		"ts-node": "^10.9.2",
+		"tsx": "^4.20.5",
+		"typescript": "^5.7.3"
+	}
+}
