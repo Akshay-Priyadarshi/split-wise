@@ -12,6 +12,11 @@ declare module 'motia' {
   }
 
   interface Handlers {
-    'ExpenseCreateApi': ApiRouteHandler<{ description: string; amount: number; userId: string }, ApiResponse<201, { data?: { id: string; description: string; amount: number; userId: string }; message: string; success: boolean }> | ApiResponse<500, { data?: unknown; message: string; success: boolean }>, never>
+    'UserReadApi': ApiRouteHandler<Record<string, unknown>, ApiResponse<200, { data?: { id: string; email: string; name: string }; message?: string }> | ApiResponse<404, { data?: { id: string; email: string; name: string }; message?: string }> | ApiResponse<500, { data?: { id: string; email: string; name: string }; message?: string }>, never>
+    'ExpenseReadApi': ApiRouteHandler<Record<string, unknown>, ApiResponse<200, { data?: { id: string; description: string; amount: number; userId: string; expenseCategoryId: string }; message?: string }> | ApiResponse<500, { data?: { id: string; description: string; amount: number; userId: string; expenseCategoryId: string }; message?: string }>, never>
+    'ExpenseCreateApi': ApiRouteHandler<{ description: string; amount: number; userId: string; expenseCategoryId: string }, ApiResponse<201, { data?: { id: string; description: string; amount: number; userId: string; expenseCategoryId: string }; message?: string }> | ApiResponse<500, { data?: { id: string; description: string; amount: number; userId: string; expenseCategoryId: string }; message?: string }>, never>
+    'ExpenseCategoryCreateApi': ApiRouteHandler<{ name: string; userId: string }, ApiResponse<201, { data?: { id: string; name: string; userId: string }; message?: string }> | ApiResponse<500, { data?: { id: string; name: string; userId: string }; message?: string }>, never>
+    'UserCreateApi': ApiRouteHandler<{ email: string; name: string; password: string }, ApiResponse<201, { data?: { id: string; email: string; name: string }; message?: string }> | ApiResponse<400, { data?: { id: string; email: string; name: string }; message?: string }> | ApiResponse<500, { data?: { id: string; email: string; name: string }; message?: string }>, never>
+    'ExpenseCategoryReadApi': ApiRouteHandler<Record<string, unknown>, ApiResponse<200, { data?: { id: string; name: string; userId: string }; message?: string }> | ApiResponse<404, { data?: { id: string; name: string; userId: string }; message?: string }> | ApiResponse<500, { data?: { id: string; name: string; userId: string }; message?: string }>, never>
   }
 }

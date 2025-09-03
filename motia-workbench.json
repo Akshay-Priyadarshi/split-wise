@@ -46,13 +46,9 @@
 	{
 		"id": "expense-create",
 		"config": {
-			"steps/events/create-expense.event.step.ts": {
-				"x": 184,
-				"y": 60
-			},
-			"steps/apis/create-expense.api.step.ts": {
-				"x": -239,
-				"y": -30
+			"steps/apis/expense-create.api.step.ts": {
+				"x": 0,
+				"y": 0
 			}
 		}
 	}

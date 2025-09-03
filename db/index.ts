@@ -1,2 +1,2 @@
 export { db } from "./drizzle";
-export { expense, user } from "./schema";
+export { expense, expenseCategory, user } from "./schema";
