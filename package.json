@@ -10,15 +10,17 @@
 		"clean": "rm -rf dist node_modules python_modules .motia .mermaid",
 		"migrations:generate": "npx drizzle-kit generate",
 		"migrations:apply": "npx drizzle-kit migrate --config ./drizzle.config.ts",
+		"auth:generate": "npx @better-auth/cli generate --output ./db/schemas/auth.schema.ts --config ./lib/auth/auth.ts",
 		"prepare": "npx @biomejs/biome check --write"
 	},
 	"keywords": [
 		"motia"
 	],
 	"dependencies": {
+		"better-auth": "^1.3.9",
 		"dotenv": "^17.2.1",
 		"drizzle-orm": "^0.44.5",
-		"motia": "^0.6.1-beta.124",
+		"motia": "^0.2.2",
 		"pg": "^8.16.3",
 		"zod": "^3.25.76"
 	},

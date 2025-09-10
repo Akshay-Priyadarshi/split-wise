@@ -1,11 +1,5 @@
 import * as t from "drizzle-orm/pg-core";
-
-export const user = t.pgTable("users", {
-	id: t.uuid().defaultRandom().primaryKey(),
-	name: t.text().notNull(),
-	email: t.text().notNull().unique(),
-	password: t.text().notNull(),
-});
+import { user } from "./auth.schema";
 
 export const expense = t.pgTable(
 	"expenses",
@@ -13,8 +7,14 @@ export const expense = t.pgTable(
 		id: t.uuid().defaultRandom().primaryKey(),
 		description: t.text().notNull(),
 		amount: t.integer().notNull(),
-		userId: t.uuid().notNull(),
+		userId: t.text().notNull(),
 		expenseCategoryId: t.uuid().notNull(),
+		createdAt: t.timestamp("createdAt").defaultNow().notNull(),
+		updatedAt: t
+			.timestamp("updatedAt")
+			.defaultNow()
+			.$onUpdate(() => /* @__PURE__ */ new Date())
+			.notNull(),
 	},
 	(table) => [
 		t.foreignKey({
@@ -35,7 +35,13 @@ export const expenseCategory = t.pgTable(
 	{
 		id: t.uuid().defaultRandom().primaryKey(),
 		name: t.text().notNull(),
-		userId: t.uuid().notNull(),
+		userId: t.text().notNull(),
+		createdAt: t.timestamp("createdAt").defaultNow().notNull(),
+		updatedAt: t
+			.timestamp("updatedAt")
+			.defaultNow()
+			.$onUpdate(() => /* @__PURE__ */ new Date())
+			.notNull(),
 	},
 	(table) => [
 		t.foreignKey({

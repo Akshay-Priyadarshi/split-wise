@@ -1,6 +1,3 @@
-export type { IExpense, IExpenseCreate } from "./expense";
-export type {
-	IExpenseCategory,
-	IExpenseCategoryCreate,
-} from "./expense_category";
-export type { IUser, IUserCreate } from "./user";
+export type * from "./expense";
+export type * from "./expense_category";
+export type * from "./user";
