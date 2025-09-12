@@ -1,5 +1,6 @@
 import type { ApiRouteConfig, Handlers } from "motia";
 import { auth } from "../../lib";
+import { errorHandlingMiddleware } from "../../middlewares";
 import {
 	apiResponseBodySchema,
 	authEmailSignupReqSchema,
@@ -18,30 +19,24 @@ export const config: ApiRouteConfig = {
 	bodySchema: authEmailSignupReqSchema,
 	responseSchema: {
 		200: apiResponseSchema,
+		400: apiResponseSchema,
 		500: apiResponseSchema,
 	},
+	middleware: [errorHandlingMiddleware],
 };
 
 export const handler: Handlers["AuthEmailSignupApi"] = async (
 	req,
 	{ logger, traceId },
 ) => {
-	logger.info("AUTH EMAIL SIGNUP API", { traceId });
-	try {
-		logger.info(`TraceID: ${traceId} - AuthEmailSignupApi called`);
-		const signupResponse = await auth.api.signUpEmail({ body: req.body });
-		return {
-			status: 200,
-			body: apiResponseSchema.parse({
-				data: signupResponse,
-				message: "User signed up successfully",
-			}),
-		};
-	} catch (error) {
-		logger.error("Error creating expense category", { traceId, error });
-		return {
-			status: 500,
-			body: apiResponseSchema.parse({}),
-		};
-	}
+	logger.info("Step Execution started", { traceId });
+	const signupResponse = await auth.api.signUpEmail({ body: req.body });
+	logger.info("User signed up successfully", { traceId });
+	return {
+		status: 200,
+		body: apiResponseSchema.parse({
+			data: signupResponse,
+			message: "User signed up successfully",
+		}),
+	};
 };

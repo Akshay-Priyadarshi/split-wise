@@ -1,4 +1,5 @@
 import type { ApiRouteConfig, Handlers } from "motia";
+import { errorHandlingMiddleware } from "../../middlewares";
 import {
 	apiResponseBodySchema,
 	expenseCategoryCreateSchema,
@@ -18,31 +19,26 @@ export const config: ApiRouteConfig = {
 	bodySchema: expenseCategoryCreateSchema,
 	responseSchema: {
 		201: apiResponseSchema,
+		400: apiResponseSchema,
 		500: apiResponseSchema,
 	},
 	emits: [],
+	middleware: [errorHandlingMiddleware],
 };
 
 export const handler: Handlers["ExpenseCategoryCreateApi"] = async (
 	req,
 	{ logger, traceId },
 ) => {
-	logger.info("EXPENSE CATEGORY CREATE API", { traceId });
-	try {
-		const expenseCategoryService = new ExpenseCategoryService();
-		const createExpenseCategory = await expenseCategoryService.create(req.body);
-		return {
-			status: 201,
-			body: apiResponseSchema.parse({
-				data: createExpenseCategory,
-				message: "Expense category created successfully",
-			}),
-		};
-	} catch (error) {
-		logger.error("Error creating expense category", { traceId, error });
-		return {
-			status: 500,
-			body: apiResponseSchema.parse({}),
-		};
-	}
+	logger.info("Step Execution started", { traceId });
+	const expenseCategoryService = new ExpenseCategoryService();
+	const createdExpenseCategory = await expenseCategoryService.create(req.body);
+	logger.info("Expense category created successfully", { traceId });
+	return {
+		status: 201,
+		body: apiResponseSchema.parse({
+			data: createdExpenseCategory,
+			message: "Expense category created successfully",
+		}),
+	};
 };

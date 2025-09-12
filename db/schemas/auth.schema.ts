@@ -1,6 +1,6 @@
 import { boolean, pgTable, text, timestamp } from "drizzle-orm/pg-core";
 
-export const user = pgTable("user", {
+export const users = pgTable("users", {
 	id: text("id").primaryKey(),
 	name: text("name").notNull(),
 	email: text("email").notNull().unique(),
@@ -13,7 +13,7 @@ export const user = pgTable("user", {
 		.notNull(),
 });
 
-export const session = pgTable("session", {
+export const sessions = pgTable("sessions", {
 	id: text("id").primaryKey(),
 	expiresAt: timestamp("expiresAt").notNull(),
 	token: text("token").notNull().unique(),
@@ -25,16 +25,16 @@ export const session = pgTable("session", {
 	userAgent: text("userAgent"),
 	userId: text("userId")
 		.notNull()
-		.references(() => user.id, { onDelete: "cascade" }),
+		.references(() => users.id, { onDelete: "cascade" }),
 });
 
-export const account = pgTable("account", {
+export const accounts = pgTable("accounts", {
 	id: text("id").primaryKey(),
 	accountId: text("accountId").notNull(),
 	providerId: text("providerId").notNull(),
 	userId: text("userId")
 		.notNull()
-		.references(() => user.id, { onDelete: "cascade" }),
+		.references(() => users.id, { onDelete: "cascade" }),
 	accessToken: text("accessToken"),
 	refreshToken: text("refreshToken"),
 	idToken: text("idToken"),
@@ -48,7 +48,7 @@ export const account = pgTable("account", {
 		.notNull(),
 });
 
-export const verification = pgTable("verification", {
+export const verifications = pgTable("verifications", {
 	id: text("id").primaryKey(),
 	identifier: text("identifier").notNull(),
 	value: text("value").notNull(),

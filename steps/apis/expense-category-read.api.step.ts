@@ -1,5 +1,5 @@
 import type { ApiRouteConfig, Handlers } from "motia";
-import { z } from "zod";
+import { errorHandlingMiddleware } from "../../middlewares";
 import { apiResponseBodySchema, expenseCategorySchema } from "../../schemas";
 import { ExpenseCategoryService } from "../../services";
 
@@ -15,45 +15,35 @@ export const config: ApiRouteConfig = {
 	responseSchema: {
 		200: apiResponseSchema,
 		404: apiResponseSchema,
+		400: apiResponseSchema,
 		500: apiResponseSchema,
 	},
 	emits: [],
+	middleware: [errorHandlingMiddleware],
 };
 
 export const handler: Handlers["ExpenseCategoryReadApi"] = async (
 	req,
 	{ logger, traceId },
 ) => {
-	logger.info("EXPENSE CATEGORY READ API", { traceId });
-	try {
-		const expenseCategoryService = new ExpenseCategoryService();
-		const readExpenseCategory = await expenseCategoryService.readById(
-			req.pathParams.id,
-		);
-		if (!readExpenseCategory) {
-			return {
-				status: 404,
-				body: apiResponseBodySchema(z.null()).parse({
-					message: "Expense category not found",
-				}),
-			};
-		}
+	logger.info("Step Execution started", { traceId });
+	const expenseCategoryService = new ExpenseCategoryService();
+	const readExpenseCategory = await expenseCategoryService.readById(
+		req.pathParams.id,
+	);
+	if (!readExpenseCategory) {
 		return {
-			status: 200,
-			body: apiResponseBodySchema(expenseCategorySchema).parse({
-				message: "Expense category retrieved successfully",
-				data: readExpenseCategory,
+			status: 404,
+			body: apiResponseSchema.parse({
+				message: "Expense category not found",
 			}),
 		};
-	} catch (error) {
-		logger.error("Error creating expense", {
-			traceId,
-			error,
-			trace: (error as Error).stack,
-		});
-		return {
-			status: 500,
-			body: apiResponseBodySchema(z.null()).parse({}),
-		};
 	}
+	return {
+		status: 200,
+		body: apiResponseSchema.parse({
+			message: "Expense category retrieved successfully",
+			data: readExpenseCategory,
+		}),
+	};
 };

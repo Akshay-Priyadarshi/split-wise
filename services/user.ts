@@ -1,24 +1,17 @@
 import { eq, type SQL } from "drizzle-orm";
-import { db, user } from "../db";
-import type { IUser, IUserCreate } from "../interfaces";
+import { db, dbSchema } from "../db";
+import type { IUser } from "../interfaces";
 
 export class UserService {
-	async create(createData: IUserCreate): Promise<IUser | undefined> {
-		const createdUser = await db.insert(user).values(createData).returning();
-		if (Array.isArray(createdUser) && createdUser.length > 0) {
-			return createdUser[0];
-		}
-	}
-
 	async readById(userId: string): Promise<IUser | undefined> {
-		const readUser = await db.query.user.findFirst({
-			where: eq(user.id, userId),
+		const readUser = await db.query.users.findFirst({
+			where: eq(dbSchema.users.id, userId),
 		});
 		return readUser;
 	}
 
-	async readAll(filter?: SQL<typeof user>): Promise<IUser[]> {
-		const readUsers = await db.query.user.findMany({
+	async readAll(filter?: SQL<typeof dbSchema.users>): Promise<IUser[]> {
+		const readUsers = await db.query.users.findMany({
 			where: filter,
 		});
 		return readUsers;
@@ -27,7 +20,7 @@ export class UserService {
 	async deleteById(userId: string): Promise<IUser | undefined> {
 		const readUser = await this.readById(userId);
 		if (readUser) {
-			await db.delete(user).where(eq(user.id, userId));
+			await db.delete(dbSchema.users).where(eq(dbSchema.users.id, userId));
 		}
 		return readUser;
 	}
@@ -39,9 +32,9 @@ export class UserService {
 		const readUser = await this.readById(userId);
 		if (readUser) {
 			const updatedUser = await db
-				.update(user)
+				.update(dbSchema.users)
 				.set(updateData)
-				.where(eq(user.id, userId))
+				.where(eq(dbSchema.users.id, userId))
 				.returning();
 			if (Array.isArray(updatedUser) && updatedUser.length > 0) {
 				return updatedUser[0];

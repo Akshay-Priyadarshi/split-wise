@@ -32,7 +32,7 @@ export const authEmailSignupReqSchema = z.object({
 });
 
 export const authEmailSignupResSchema = z.object({
-	token: z.null(),
+	token: z.string(),
 	user: z.object({
 		id: z.string(),
 		email: z.string(),

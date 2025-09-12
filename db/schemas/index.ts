@@ -1,15 +1,15 @@
-import { expense, expenseCategory } from "./app.schema";
-import { account, session, user, verification } from "./auth.schema";
+import { expenseCategories, expenses } from "./app.schema";
+import { accounts, sessions, users, verifications } from "./auth.schema";
 
 export const dbAuthSchema = {
-	user,
-	account,
-	session,
-	verification,
+	users,
+	accounts,
+	sessions,
+	verifications,
 };
 
 export const dbSchema = {
 	...dbAuthSchema,
-	expense,
-	expenseCategory,
+	expenses,
+	expenseCategories,
 };
